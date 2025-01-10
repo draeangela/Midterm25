@@ -102,18 +102,18 @@ public class MainFrame extends JFrame {
     */
    private void startTimer(int selectedTime) {
        countdownTime = selectedTime;
-       timerLabel.setText("Time left: " + countdownTime + " seconds");
+       timerLabel.setText("Time left: " + countdownTime + " seconds"); //updates countdown time
       
        // Making timer
        timer = new Timer(1000, (ActionEvent e) -> {
-           countdownTime--;
+           countdownTime--; //decrement countdown time
            if (countdownTime >= 0) {
                timerLabel.setText("Time left: " + countdownTime + " seconds");
-           } else {
-               timer.stop();
-               makeFinalStats();
+           } else { //when timer reaches 0
+               timer.stop(); //stops timer
+               makeFinalStats(); 
                updateFinalPanel();
-               cardLayout.show(cardPanel, "Final");
+               cardLayout.show(cardPanel, "Final"); //takes to final page
            }
        });
 
@@ -330,7 +330,7 @@ public class MainFrame extends JFrame {
     *
     * @return A 2D array representing the letter grid
     */
-   private String[][] generateLetterArr() { //CHLOE
+    private String[][] generateLetterArr() { //CHLOE
        String letters = generate8Letters(findFrequency(dictionary));
        String vowel = generate1Vowel(findVowelFrequency(dictionary));
        String nineLetters = combineNine(letters, vowel);
@@ -348,7 +348,7 @@ public class MainFrame extends JFrame {
        }
 
 
-       return(upperCaseMatrix);
+       return upperCaseMatrix;
    }
 
 
@@ -392,41 +392,37 @@ public class MainFrame extends JFrame {
            alphabetCount.add(0);
        }
 
-       String letters = "abcdefghijklmnopqrstuvwxyz";
+       String letters = "abcdefghijklmnopqrstuvwxyz"; //whole alphabet
        for (int i = 0; i < allWords.size(); i++) {
            for (int j = 0; j < allWords.get(i).length(); j++) {
-               char currentChar = allWords.get(i).charAt(j); // Gets each character in a given word
-               int index = letters.indexOf(currentChar); // Gets index of that character in the alphabet, will line up with the index in the array list that we want to put it in at
-               if (index != -1) { // Only valid letters
-                   alphabetCount.set(index, alphabetCount.get(index) + 1); // Increment in alphabetCount
+               char currentChar = allWords.get(i).charAt(j); //gets each character in a given word
+               int index = letters.indexOf(currentChar); //gets index of that character in the alphabet, will line up with the index in the array list that we want to put it in at
+               if (index != -1) { //only valid letters
+                   alphabetCount.set(index, alphabetCount.get(index) + 1); //increment in alphabetCount
                }
            }
        }
 
        int totalCharacters = 0;
-       for (int i = 0; i < 26; i++) { // Count total characters
+       for (int i = 0; i < 26; i++) { //count total characters for denominator of bucket variable
            totalCharacters += alphabetCount.get(i);
        }
 
 
 
 
-       ArrayList<Double> frequencies = new ArrayList<>();
+       ArrayList<Double> frequencies = new ArrayList<>(); //create frequency array with 0.0 in every slot
        for (int i = 0; i < 26; i++) {
            frequencies.add(0.0);
        }
 
 
-       // Divide each count by total characters to get the frequencies
+       //divide each count by total characters to get the frequencies
        for (int i = 0; i < 26; i++) {
            if (totalCharacters > 0) {
                frequencies.set(i, ((double) alphabetCount.get(i) / totalCharacters));
            }
        }
-
-
-
-
        return frequencies;
    }
 
@@ -439,15 +435,15 @@ public class MainFrame extends JFrame {
     * @return A string of 8 random letters
     */
    public String generate8Letters(ArrayList<Double> frequencies) {
-       String letters = "abcdefghijklmnopqrstuvwxyz";
+       String letters = "abcdefghijklmnopqrstuvwxyz"; //whole alphabet
        String result = "";
  
        for (int i = 0; i < 8; i++) {
-           double rand = Math.random(); // Generate random number between 0 and 1
+           double rand = Math.random(); //generate random number between 0 and 1
            double cumulativeProbability = 0.0;
  
            for (int j = 0; j < frequencies.size(); j++) {
-               cumulativeProbability += frequencies.get(j); // To create gaps (EX. a = 0-0.08, b = 0.08 - 0.12, etc)
+               cumulativeProbability += frequencies.get(j); //to create gaps (EX. a = 0-0.08, b = 0.08 - 0.12, etc)
                if (rand <= cumulativeProbability) {
                    result += letters.charAt(j);
                    break;
@@ -466,22 +462,22 @@ public class MainFrame extends JFrame {
     * @return A list of vowel frequencies
     */
    public ArrayList<Double> findVowelFrequency(ArrayList<String> allWords) {
-       ArrayList<Integer> vowelCount = new ArrayList<>();
+       ArrayList<Integer> vowelCount = new ArrayList<>(); //same thing but for vowels
        for (int i = 0; i < 5; i++) {
            vowelCount.add(0);
        }
-       String letters = "aeiou"; // Vowels
+       String letters = "aeiou"; // all vowels
        for (int i = 0; i < allWords.size(); i++) {
            for (int j = 0; j < allWords.get(i).length(); j++) {
-               char currentChar = allWords.get(i).charAt(j); // Gets each character in a given word
-               int index = letters.indexOf(currentChar); // Gets index of that character in the alphabet, will line up with the index in the array list that we want to put it in at
+               char currentChar = allWords.get(i).charAt(j); //gets each character in a given word
+               int index = letters.indexOf(currentChar); //gets index of that character in the alphabet, will line up with the index in the array list that we want to put it in at
                if (index != -1) { // Only valid letters
-                   vowelCount.set(index, vowelCount.get(index) + 1); // Increment in alphabetCount
+                   vowelCount.set(index, vowelCount.get(index) + 1); // increment in alphabetCount
                }
            }
        }
        int totalVowels = 0;
-       for (int i = 0; i < 5; i++) { // Count total characters
+       for (int i = 0; i < 5; i++) { // count total characters
            totalVowels += vowelCount.get(i);
        }
        ArrayList<Double> vowelFrequencies = new ArrayList<>();
@@ -490,7 +486,7 @@ public class MainFrame extends JFrame {
        }
        for (int i = 0; i < 5; i++) {
            if (totalVowels > 0) {
-               vowelFrequencies.set(i, ((double) vowelCount.get(i) / totalVowels)); // Divide each count by total characters to get the frequencies
+               vowelFrequencies.set(i, ((double) vowelCount.get(i) / totalVowels)); // divide each count by total characters to get the frequencies
            }
        }
        return vowelFrequencies;
@@ -508,11 +504,11 @@ public class MainFrame extends JFrame {
        String result = "";
  
        for (int i = 0; i < 1; i++) {
-           double rand = Math.random(); // Generate random number between 0 and 1
+           double rand = Math.random(); //generate random number between 0 and 1
            double cumulativeProbability = 0.0;
  
            for (int j = 0; j < vowelFrequencies.size(); j++) {
-               cumulativeProbability += vowelFrequencies.get(j); // To create gaps (EX. a = 0-0.08, b = 0.08 - 0.12, etc)
+               cumulativeProbability += vowelFrequencies.get(j); //to create gaps (EX. a = 0-0.08, b = 0.08 - 0.12, etc)
                if (rand <= cumulativeProbability) {
                    result += vowels.charAt(j);
                    break;
@@ -525,18 +521,18 @@ public class MainFrame extends JFrame {
 
 
    /**
-    * Combines the 8 letters and 1 vowel into a string of 9 letters.
+    * Combines the 8 letters and 1 vowel into a string of 9 letters, with the vowel in the middle
     * CONTRIBUTOR: Chloe
     *
     * @param eightLetters The string of 8 letters
     * @param oneVowel The single vowel to add
     * @return A string combining the 8 letters and 1 vowel
     */
-   public String combineNine(String eightLetters, String oneVowel){
+   public String combineNine(String eightLetters, String oneVowel){ 
        String allNine = "";
        String firstFour = eightLetters.substring(0,4);
        allNine += firstFour;
-       allNine += oneVowel;
+       allNine += oneVowel; //add vowel at fourth index
        String lastFour = eightLetters.substring(4);
        allNine += lastFour;
        return allNine;
@@ -575,7 +571,7 @@ public class MainFrame extends JFrame {
       
        // Add the largest word from this round to the instance variable max word list
        String currentMax = "";
-       for (String wordFound : wordsFound) {
+       for (String wordFound : wordsFound) { //go through the list of words found
            if (wordFound.length() > currentMax.length()) {
                currentMax = wordFound; // Reset currentMax word if the word in wordsFound is longer
            }
@@ -601,9 +597,9 @@ public class MainFrame extends JFrame {
       
        // Find max word (LARA)
        String maxWord = "";
-       for (int i = 0; i< maxSingleWordScores.size(); i++){
-           if ((maxSingleWordScores.get(i).length() > maxWord.length())){
-               maxWord = maxSingleWordScores.get(i);
+       for (int i = 0; i< maxSingleWordScores.size(); i++){  //loop through all the max words
+           if ((maxSingleWordScores.get(i).length() > maxWord.length())){ 
+               maxWord = maxSingleWordScores.get(i); //change max word if the found word is longer than the previous max word
            }
        }
       
@@ -623,8 +619,10 @@ public class MainFrame extends JFrame {
        if (maxFinalScores.isEmpty()) {
            maxScore = 0;
        } else {
+            //iterate through max final scores
            for (int i = 0; i<maxFinalScores.size(); i++){
                if ((maxFinalScores.get(i) > maxScore)){
+                    //if greater, update maxScore
                    maxScore = maxFinalScores.get(i);
                }
            }
@@ -638,6 +636,7 @@ public class MainFrame extends JFrame {
        if (wordCountPerGame.isEmpty()) {
            maxAmount = 0;
        } else {
+            //iterate through wordCountPerGame and find maxAmount (update Max Amount if the new value is greater)
            for (int i =0; i<wordCountPerGame.size(); i++){
                if (wordCountPerGame.get(i) > maxAmount){
                    maxAmount = wordCountPerGame.get(i);
@@ -719,7 +718,8 @@ public class MainFrame extends JFrame {
    * @return JButton A button labeled "30"
    */
    private JButton thirtySeconds(){
-       JButton thirtySec = new JButton("30");
+       //setting up button preferences: 
+        JButton thirtySec = new JButton("30"); 
        thirtySec.setFont(mainFont);
        thirtySec.setBackground(Color.WHITE);
        thirtySec.setForeground(Color.BLACK);
@@ -742,7 +742,8 @@ public class MainFrame extends JFrame {
    * @return JButton A button labeled "60"
    */
    private JButton sixtySeconds(){ //Lara
-       JButton sixtySec = new JButton("60");
+        //setting up button preferences:  
+        JButton sixtySec = new JButton("60");
        sixtySec.setFont(mainFont);
        sixtySec.setBackground(Color.WHITE);
        sixtySec.setForeground(Color.BLACK);
@@ -764,6 +765,7 @@ public class MainFrame extends JFrame {
    * @return JButton A button labeled "90"
    */
    private JButton ninetySeconds(){ //Lara
+    //setting up button preferences: 
        JButton ninetySec = new JButton("90");
        ninetySec.setFont(mainFont);
        ninetySec.setBackground(Color.WHITE);
@@ -786,6 +788,7 @@ public class MainFrame extends JFrame {
    * @return JButton A button labeled "120"
    */
    private JButton oneTwentySeconds(){ //Lara
+    //setting up button preferences: 
        JButton oneTwentySec = new JButton("120");
        oneTwentySec.setFont(mainFont);
        oneTwentySec.setBackground(Color.WHITE);
