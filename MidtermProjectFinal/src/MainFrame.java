@@ -5,7 +5,6 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.Timer;
 
-
 /**
 * This class provides the GUI and functionality for the game BOGGLE.
 * It includes methods to manage the game state, handle user interactions, validate words, update scores, and display statistics.
